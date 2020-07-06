@@ -11,5 +11,6 @@ namespace finance.model
         public int CategoryId { get; set; }
         public Decimal Value { get; set; }
         public string WalletId { get; set; }
+        public DateTime Date { get; set; }
     }
 }
