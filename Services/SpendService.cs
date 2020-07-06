@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using finance.model;
 using finance.Repository;
@@ -19,6 +20,7 @@ namespace Finance.Services
 
         public async Task<Spend> AddSpend(Spend spend, string userID){
             if (string.IsNullOrEmpty(spend.WalletId)) spend.WalletId = WalletRepository.GetByName("default", userID)?.Id;
+            if (spend.Date == null ) throw new Exception("Spend need a date");
             return await Repository.CreateAsync(spend);
         }
     }
