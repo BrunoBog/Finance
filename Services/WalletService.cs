@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Finance.model;
 using Finance.Repository;
@@ -17,5 +19,10 @@ namespace Finance.Services
             w.UserID = username;
             return await WalletRepository.CreateAsync(w);
         } 
+
+        public List<Wallet> GetWalletByUser(string username)=> WalletRepository.GetByUser(username);
+
+        public Wallet GetByName( string walletName, string userId) =>  WalletRepository.GetByName(walletName, userId);
+
     }
 }

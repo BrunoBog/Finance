@@ -20,6 +20,8 @@ namespace Finance.Repository
 
         public IMongoCollection<Wallet> Collection { get; }
 
+        internal List<Wallet> GetByUser(string username) => Collection.Find( i => i.UserID.Equals(username)).ToList();
+
         public List<Wallet> Get() => Collection.Find(User => true).ToList();
         public Wallet Get(string id) => Collection.Find<Wallet>(item => item.Id.ToString().Equals(id)).FirstOrDefault();
 

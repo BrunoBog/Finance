@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using finance.model;
+using Finance.model;
 using Finance.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Finance.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<List<Spend>>  GetAllSpends() => SpendService.GetAll();
+        public List<Spend>  GetAllSpends() => SpendService.GetAll();
 
         [HttpPost]
         [Authorize]
@@ -38,5 +39,10 @@ namespace Finance.Controllers
         [HttpPut]
         [Authorize]
         public Task<ActionResult<dynamic>> UpdateSpend(Spend spend) => SpendService.Update(spend);
+        
+        [HttpGet]
+        [Authorize]
+        [Route("weekSummary")]
+        public SummaryDTO GetSummary() => SpendService.GetSummaryByUserID(User.Identity.Name);
     }
 }

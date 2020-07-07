@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using finance.model;
 using Finance.Repository;
+using Finance.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -10,17 +11,17 @@ namespace finance.Repository
 {
     public class SpendRepository : IBaseRepository<Spend>
     {
-        public SpendRepository(IDatabaseSettings settings, WalletRepository walletRepository)
+        public SpendRepository(IDatabaseSettings settings, WalletService walletService)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
+            WalletService = walletService;
             Collection = database.GetCollection<Spend>(nameof(Spend));
-            WalletRepository = walletRepository;
         }
 
         public IMongoCollection<Spend> Collection { get; }
-        public WalletRepository WalletRepository { get; }
+        public WalletService WalletService { get; }
 
         public async Task<Spend> CreateAsync(Spend item)
         {
@@ -37,22 +38,27 @@ namespace finance.Repository
 
         public Spend Get(string id) => Collection.Find<Spend>(s => s.Id.ToString().Equals(id.ToString())).FirstOrDefault();
 
-        public dynamic Update(Spend spend) {
+        public dynamic Update(Spend spend)
+        {
             try
             {
-                var r = Collection.ReplaceOne( item => item.Id == spend.Id, spend);
+                var r = Collection.ReplaceOne(item => item.Id == spend.Id, spend);
 
-            return new {
-                r.ModifiedCount,
-                r.UpsertedId
-            };
+                return new
+                {
+                    r.ModifiedCount,
+                    r.UpsertedId
+                };
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                
+                Console.WriteLine(e);
                 throw;
             }
-            
+
         }
+
+        internal List<Spend> GetSpendsInWallet(ObjectId wallet_id, DateTime start, DateTime end) => Collection.Find(s => s.WalletId == wallet_id && s.Date <= end && s.Date >= start).ToList();
+
     }
 }
