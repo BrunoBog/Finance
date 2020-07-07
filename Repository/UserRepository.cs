@@ -1,6 +1,7 @@
 using finance.model;
 using Finance.model;
 using Finance.Repository;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace finance.Repository
         Collection.Find(User => true).ToList();
 
         public User Get(string id) =>
-            Collection.Find<User>(UserDTO => UserDTO.Id == id).FirstOrDefault();
+            Collection.Find<User>(UserDTO => UserDTO.Id.ToString().Equals(id.ToString())).FirstOrDefault();
 
         public async Task<User> GetByEmailAndPasswordAsync(String email, String password) =>
             await Collection.Find(u => u.Email.Equals(email) && u.Password.Equals(password)).Limit(1).SingleAsync();
@@ -31,7 +32,7 @@ namespace finance.Repository
         public User Create(User UserDTO)
         {
             if (UserDTO.Id == null)
-                UserDTO.Id = Guid.NewGuid().ToString();
+                UserDTO.Id =  ObjectId.GenerateNewId();
 
             Collection.InsertOne(UserDTO);
             return UserDTO;
@@ -40,20 +41,20 @@ namespace finance.Repository
         public async Task<User> CreateAsync(User item)
         {
             if (item.Id == null)
-                item.Id = Guid.NewGuid().ToString();
+                item.Id =  ObjectId.GenerateNewId();
 
             await Collection.InsertOneAsync(item);
             return item;
         }
 
         public void Update(string id, User UserDTOIn) =>
-            Collection.ReplaceOne(UserDTO => UserDTO.Id == id, UserDTOIn);
+            Collection.ReplaceOne(UserDTO => UserDTO.Id.ToString().Equals( id), UserDTOIn);
 
         public void Remove(User UserDTOIn) =>
             Collection.DeleteOne(UserDTO => UserDTO.Id == UserDTOIn.Id);
 
         public void Remove(string id) =>
-            Collection.DeleteOne(UserDTO => UserDTO.Id == id);
+            Collection.DeleteOne(UserDTO => UserDTO.Id.ToString().Equals(id));
     }
 
 }

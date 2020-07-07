@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using finance.model;
 using Finance.Repository;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace finance.Repository
@@ -24,9 +25,9 @@ namespace finance.Repository
         public async Task<Spend> CreateAsync(Spend item)
         {
             if (item.Id == null)
-                item.Id = Guid.NewGuid().ToString();
+                item.Id = ObjectId.GenerateNewId();
 
-            if (string.IsNullOrWhiteSpace(item.WalletId)) throw new Exception("Spend Must have a wallet");
+            if (string.IsNullOrWhiteSpace(item.WalletId.ToString())) throw new Exception("Spend Must have a wallet");
 
             await Collection.InsertOneAsync(item);
             return item;
@@ -34,6 +35,24 @@ namespace finance.Repository
         }
         public List<Spend> Get() => Collection.Find(spend => true).ToList();
 
-        public Spend Get(string id) => Collection.Find<Spend>(s => s.Id == id).FirstOrDefault();
+        public Spend Get(string id) => Collection.Find<Spend>(s => s.Id.ToString().Equals(id.ToString())).FirstOrDefault();
+
+        public dynamic Update(Spend spend) {
+            try
+            {
+                var r = Collection.ReplaceOne( item => item.Id == spend.Id, spend);
+
+            return new {
+                r.ModifiedCount,
+                r.UpsertedId
+            };
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            
+        }
     }
 }

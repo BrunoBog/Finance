@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using finance.model;
 using Finance.model;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Finance.Repository
@@ -20,7 +21,7 @@ namespace Finance.Repository
         public IMongoCollection<Wallet> Collection { get; }
 
         public List<Wallet> Get() => Collection.Find(User => true).ToList();
-        public Wallet Get(string id) => Collection.Find<Wallet>(item => item.Id == id).FirstOrDefault();
+        public Wallet Get(string id) => Collection.Find<Wallet>(item => item.Id.ToString().Equals(id)).FirstOrDefault();
 
         public Wallet GetByName(string walletName, string userID) => 
             Collection.Find(wallet => wallet.Name.Equals(walletName) && wallet.UserID.Equals(userID)).FirstOrDefault();
@@ -28,7 +29,7 @@ namespace Finance.Repository
         public async Task<Wallet> CreateAsync(Wallet spendDTO)
         {
             if (spendDTO.Id == null)
-                spendDTO.Id = Guid.NewGuid().ToString();
+                spendDTO.Id = ObjectId.GenerateNewId();
 
             await Collection.InsertOneAsync(spendDTO);
             return spendDTO;

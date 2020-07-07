@@ -1,7 +1,9 @@
+using MongoDB.Bson;
+
 namespace Finance.model
 {
     public interface IBaseModel
     {
-         public string Id { get; set; }
+         public ObjectId?  Id { get; set; }
     }
 }
