@@ -19,10 +19,8 @@ namespace finance.Repository
             WalletService = walletService;
             Collection = database.GetCollection<Spend>(nameof(Spend));
         }
-
         public IMongoCollection<Spend> Collection { get; }
         public WalletService WalletService { get; }
-
         public async Task<Spend> CreateAsync(Spend item)
         {
             if (item.Id == null)
@@ -35,9 +33,7 @@ namespace finance.Repository
 
         }
         public List<Spend> Get() => Collection.Find(spend => true).ToList();
-
         public Spend Get(string id) => Collection.Find<Spend>(s => s.Id.ToString().Equals(id.ToString())).FirstOrDefault();
-
         public dynamic Update(Spend spend)
         {
             try
@@ -50,14 +46,13 @@ namespace finance.Repository
                     r.UpsertedId
                 };
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
 
         }
-
         internal List<Spend> GetSpendsInWallet(ObjectId wallet_id, DateTime start, DateTime end) => Collection.Find(s => s.WalletId == wallet_id && s.Date <= end && s.Date >= start).ToList();
 
     }

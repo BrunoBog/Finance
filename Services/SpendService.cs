@@ -39,9 +39,9 @@ namespace Finance.Services
 
         internal dynamic Update(Spend spend) => Repository.Update(spend);
 
-        internal SummaryDTO GetSummaryByUserID(string username)
+        internal SummaryDTO GetSummaryByUserID(string username, int monthCount = 0)
         {
-            var spends = GetSpendsFromUserWallet(username);
+            var spends = GetSpendsFromUserWallet(username, monthCount);
             return SummarySpends(spends);
         }
 
@@ -57,19 +57,18 @@ namespace Finance.Services
                     });
 
                 return new SummaryDTO{
-                    Title = $"starting in {spends.OrderBy(s => s.Date).First().Date.ToString("DD/MM/yyyy")} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
+                    Title = $"starting in {spends.OrderBy(s => s.Date).First().Date.ToString("dd/MM/yyyy")} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
                     Summary = weekSpends.ToList()
                 };
-                    // return weekSpends;
 
         }
 
-        private List<Spend> GetSpendsFromUserWallet(string username)
+        private List<Spend> GetSpendsFromUserWallet(string username, int monthCount = 0)
         {
             var spends = new List<Spend>();
 
             WalletService.GetWalletByUser(username).ForEach(w =>
-               spends.AddRange( Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1), end: DateTime.Now))
+               spends.AddRange( Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthCount *1), end: DateTime.Now.AddMonths(monthCount *1)))
             );
 
             return spends;

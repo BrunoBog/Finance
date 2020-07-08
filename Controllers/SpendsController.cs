@@ -43,6 +43,6 @@ namespace Finance.Controllers
         [HttpGet]
         [Authorize]
         [Route("weekSummary")]
-        public SummaryDTO GetSummary() => SpendService.GetSummaryByUserID(User.Identity.Name);
+        public SummaryDTO GetSummary([FromQuery] int monthCount) => SpendService.GetSummaryByUserID(User.Identity.Name, monthCount);
     }
 }
