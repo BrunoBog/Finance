@@ -58,7 +58,8 @@ namespace Finance.Services
 
                 return new SummaryDTO{
                     Title = $"starting in {spends.OrderBy(s => s.Date).First().Date.ToString("dd/MM/yyyy")} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
-                    Summary = weekSpends.ToList()
+                    Summary = weekSpends.OrderBy(s => s.WeekNumber).ToList(),
+                    MonthTotal = weekSpends.Sum(w => w.Total)
                 };
 
         }

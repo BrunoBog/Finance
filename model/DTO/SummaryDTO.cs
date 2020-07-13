@@ -6,6 +6,7 @@ namespace Finance.model
     {
         public string Title { get; set; }
         public List<WeekSummary> Summary { get; set; }
+        public decimal MonthTotal { get; set; }
     }
 
     public class WeekSummary{
