@@ -6,6 +6,7 @@ using finance.model;
 using finance.Repository;
 using Finance.model;
 using Finance.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Finance.Services
 {
@@ -45,6 +46,10 @@ namespace Finance.Services
             return SummarySpends(spends);
         }
 
+        internal List<Spend> GetSpendsOnMonth(int monthNumber, int yearNumber) =>  
+            Repository.GetSpendsBetweenDates(new DateTime(yearNumber,monthNumber,1), new DateTime(yearNumber,monthNumber+1,1).AddSeconds(-1)).OrderByDescending(s => s.Date).ToList();
+        
+
         private SummaryDTO SummarySpends(List<Spend> spends)
         {
 
@@ -57,8 +62,8 @@ namespace Finance.Services
                     });
 
                 return new SummaryDTO{
-                    Title = $"starting in {spends.OrderBy(s => s.Date).First().Date.ToString("dd/MM/yyyy")} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
-                    Summary = weekSpends.OrderBy(s => s.WeekNumber).ToList(),
+                    Title = $"starting in {spends.OrderBy(s => s.Date).First().Date:dd/MM/yyyy} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
+                    Summary = weekSpends.OrderByDescending(s => s.WeekNumber).ToList(),
                     MonthTotal = weekSpends.Sum(w => w.Total)
                 };
 

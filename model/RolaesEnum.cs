@@ -1,6 +1,6 @@
 namespace finance.model
 {
-    public enum RolaesEnum
+    public enum RolesEnum
     {
         User = 1,
         Manager = 0

@@ -30,14 +30,15 @@ namespace finance.Services
             return new
             {
                 user = user.Email,
-                token
+                token,
+                seconds_to_expire = 86400
             };
         }
 
         internal async Task<User> SignUpAsync(User user)
         {
             if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password)) return null;
-            if (string.IsNullOrWhiteSpace(user.Role)) user.Role = RolaesEnum.User.ToString();
+            if (string.IsNullOrWhiteSpace(user.Role)) user.Role = RolesEnum.User.ToString();
             var newUser = await UserRepository.CreateAsync(user);
             var login = await Authenticate(newUser);
 

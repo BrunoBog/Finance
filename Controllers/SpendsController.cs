@@ -39,6 +39,11 @@ namespace Finance.Controllers
         [HttpPut]
         [Authorize]
         public Task<ActionResult<dynamic>> UpdateSpend(Spend spend) => SpendService.Update(spend);
+
+        [HttpGet]
+        [Authorize]
+        [Route("month")]
+        public ActionResult<List<Spend>> GetSpendsFromMonth([FromQuery] int month, int year ) => SpendService.GetSpendsOnMonth(monthNumber: month, yearNumber: year);
         
         [HttpGet]
         [Authorize]

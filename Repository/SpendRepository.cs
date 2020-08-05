@@ -53,7 +53,13 @@ namespace finance.Repository
             }
 
         }
-        internal List<Spend> GetSpendsInWallet(ObjectId wallet_id, DateTime start, DateTime end) => Collection.Find(s => s.WalletId == wallet_id && s.Date <= end && s.Date >= start).ToList();
+
+        internal IEnumerable<Spend> GetSpendsBetweenDates(DateTime initialDate, DateTime endDate) =>
+            Collection.Find(s => s.Date >= initialDate && s.Date <= endDate).ToList();
+
+
+        internal List<Spend> GetSpendsInWallet(ObjectId wallet_id, DateTime start, DateTime end) =>
+            Collection.Find(s => s.WalletId == wallet_id && s.Date <= end && s.Date >= start).ToList();
 
     }
 }
