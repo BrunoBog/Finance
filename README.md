@@ -1,5 +1,5 @@
 # Finance
-Proj to controll my spends 
+Proj to controll my spends make with **.net core** and **react**
 
 
 
