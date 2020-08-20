@@ -24,15 +24,39 @@ const UserLogin = (props) => {
         })
     }
 
-    function login({ user, password }) {
-        if (user === 'admin' && password === 'admin')  return { token: '123' }
-        return { token: null }
+    async function login({ user, password }) {
+        
+        //TODO change in prod
+        // let response = await fetch('https://finance.josafat.duckdns.org/v1/User/login', {
+        //     // mode: 'no-cors',
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ Email: user, Password: password }),
+        // })
+
+
+        let response = await fetch('http://localhost:8080/v1/User/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Email: user, Password: password }),
+        })
+
+        if (!response.ok) return { token: null }
+
+        let data = await response.json()
+        debugger
+        return data
     }
 
-    function onSubmit(event) {
+    async function onSubmit(event) {
         event.preventDefault()
-        debugger
-        const { token } = login(values)
+        const { token } = await login(values)
 
         if (token) {
             setToken(token)
@@ -48,24 +72,24 @@ const UserLogin = (props) => {
                 <div className="header">Login</div>
             </header>
             <form autoComplete="nope" onSubmit={onSubmit}>
-            <div className="content">
-                <div className="image">
-                    <img src={cifrao} alt="cifrão" />
-                </div>
-                <div className="form">
-                    <div className="form-group">
-                        <label htmlFor="username"> Username</label>
-                        <input type="text" name="user" id="user" placeholder="Username" onChange={onChange}  value={values.user}/>
+                <div className="content">
+                    <div className="image">
+                        <img src={cifrao} alt="cifrão" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="password"> Password </label>
-                        <input type="password" name="password" id="password" placeholder="Password" onChange={onChange} value={values.password}/>
+                    <div className="form">
+                        <div className="form-group">
+                            <label htmlFor="username"> Username</label>
+                            <input type="text" name="user" id="user" placeholder="Username" onChange={onChange} value={values.user} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password"> Password </label>
+                            <input type="password" name="password" id="password" placeholder="Password" onChange={onChange} value={values.password} />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <footer className="footer">
-                <button className="btn" type="submit" onClick={onSubmit} >Login</button>
-            </footer>
+                <footer className="footer">
+                    <button className="btn" type="submit" onClick={onSubmit} >Login</button>
+                </footer>
             </form>
         </div>
     );
