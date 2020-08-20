@@ -92,3 +92,19 @@ You can create a new spend on system with this route
 
 You can get all spend in a specific month passing month and year on query items.
 
+**[POST] /v1/User/signUp**
+
+Add a new user to database
+
+body exemple:
+
+```
+{
+    {
+	"Email": "email@email.com",
+	"Password": "password",
+    "Role": if existss...
+    }
+}
+
+```

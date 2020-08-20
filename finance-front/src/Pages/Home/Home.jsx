@@ -13,7 +13,7 @@ const PagesHome = () => {
   
   return (
     <div className="pages-home">
-      Logou !
+      <br/> Chegou na Home em danado ? <br/><br/>
       <button type="button" onClick={logout}>Sair</button>
     </div>
   )

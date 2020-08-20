@@ -34,7 +34,7 @@ public class UserController : Controller
         {
             var newUser = await Service.SignUpAsync(user);
             if (newUser == null) return new StatusCodeResult(406); //  request.CreateResponse(HttpStatusCode.NotAcceptable, user);
-            return newUser;d
+            return newUser;
         }
         catch (System.ArgumentException)
         {
