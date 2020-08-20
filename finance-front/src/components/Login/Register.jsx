@@ -24,12 +24,24 @@ const Register = (props) => {
         })
     }
 
-    function login({ user, password }) {
-        if (user === 'admin' && password === 'admin') { return { token: '123' } }
-        return { token: '' }
+    async function login({ user, password, email }) {
+        let response = await fetch('http://localhost:8080/v1/User/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Email: email, Password: password }),
+        })
+
+        if (!response.ok) return { token: null }
+
+        let data = await response.json()
+        debugger
+        return data
     }
 
-    function onSubmit(event) {
+    async function onSubmit(event) {
         event.preventDefault()
 
         const { token } = login(values)

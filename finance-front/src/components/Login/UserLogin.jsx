@@ -9,11 +9,10 @@ function initialState() {
     return { user: '', password: '' }
 }
 
-const UserLogin = (props) => {
+const UserLogin = () => {
     const [values, setValues] = useState(initialState)
     const { setToken } = useContext(StoreContext)
     const history = useHistory()
-    // const [propState] = useContext(props) // this.props.containerRef
 
     function onChange(event) {
         const { value, name } = event.target
