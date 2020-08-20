@@ -6,14 +6,14 @@ import cifrao from "../../img/cifrao.svg";
 import './Login.scss';
 
 function initialState() {
-    return { user: '', password: '', email: '' }
+    return { user: '', password: '', email: '', errorMessage: '' }
 }
 
-const Register = (props) => {
+
+const Register = () => {
     const [values, setValues] = useState(initialState)
     const { setToken } = useContext(StoreContext)
     const history = useHistory()
-    // const [propState] = useContext(props) // this.props.containerRef
 
     function onChange(event) {
         const { value, name } = event.target
@@ -24,15 +24,31 @@ const Register = (props) => {
         })
     }
 
-    function login({ user, password }) {
-        if (user === 'admin' && password === 'admin') { return { token: '123' } }
-        return { token: '' }
+    async function register({ user, password, email }) {
+        let response = await fetch('http://localhost:8080/v1/User/signUp', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Email: email, Password: password, UserName: user }),
+        })
+
+        if(response.status === 409){
+            setValues( { errorMessage: "Email already Exists" } )
+        }
+        if (!response.ok) return { token: null }
+
+        let data = await response.json()
+        debugger
+        return data
     }
 
-    function onSubmit(event) {
+    async function onSubmit(event) {
+        debugger
         event.preventDefault()
 
-        const { token } = login(values)
+        const { token } = register(values)
 
         if (token) {
             setToken(token)
@@ -40,6 +56,10 @@ const Register = (props) => {
         }
 
         setValues(initialState)
+    }
+
+    function Errormessage(){
+        return (<article className="errorMessage"><label>{values.errorMessage}</label></article>)
     }
 
     return (
@@ -52,6 +72,7 @@ const Register = (props) => {
                     <div className="image">
                         <img src={cifrao} alt="cifrão" />
                     </div>
+                    <Errormessage/>
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username"> Username</label>
@@ -69,12 +90,10 @@ const Register = (props) => {
                 </div>
 
                 <footer className="footer">
-                    <button className="btn" type="submit" >Register</button>
+                    <button className="btn" type="submit" onSubmit={onSubmit}>Register</button>
                 </footer>
-
+                
             </form>
-
-
         </div>
     )
 };

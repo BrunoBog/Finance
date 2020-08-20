@@ -6,14 +6,13 @@ import cifrao from "../../img/cifrao.svg";
 import './Login.scss';
 
 function initialState() {
-    return { user: '', password: '' }
+    return { user: '', password: '', errorMessage: '' }
 }
 
-const UserLogin = (props) => {
+const UserLogin = () => {
     const [values, setValues] = useState(initialState)
     const { setToken } = useContext(StoreContext)
     const history = useHistory()
-    // const [propState] = useContext(props) // this.props.containerRef
 
     function onChange(event) {
         const { value, name } = event.target
@@ -22,6 +21,10 @@ const UserLogin = (props) => {
             ...values,
             [name]: value,
         })
+    }
+
+    function Errormessage(){
+        return (<article className="errorMessage"><label>{values.errorMessage}</label></article>)
     }
 
     async function login({ user, password }) {
@@ -47,7 +50,7 @@ const UserLogin = (props) => {
             body: JSON.stringify({ Email: user, Password: password }),
         })
 
-        if (!response.ok) return { token: null }
+        if (!response.ok){ return { token: null }}
 
         let data = await response.json()
         debugger
@@ -62,8 +65,9 @@ const UserLogin = (props) => {
             setToken(token)
             history.push('/')
         }
-
+        
         setValues(initialState)
+        setValues( { errorMessage: "Login Fail" } )
     }
 
     return (
@@ -76,6 +80,7 @@ const UserLogin = (props) => {
                     <div className="image">
                         <img src={cifrao} alt="cifrão" />
                     </div>
+                    <Errormessage/>
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username"> Username</label>
@@ -88,7 +93,7 @@ const UserLogin = (props) => {
                     </div>
                 </div>
                 <footer className="footer">
-                    <button className="btn" type="submit" onClick={onSubmit} >Login</button>
+                    <button className="btn" type="submit" onSubmit={onSubmit} >Login</button>
                 </footer>
             </form>
         </div>

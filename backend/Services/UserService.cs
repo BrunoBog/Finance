@@ -4,7 +4,6 @@ using finance.model;
 using finance.Repository;
 using Finance.model;
 using Finance.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace finance.Services
 {
@@ -39,6 +38,9 @@ namespace finance.Services
         {
             if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password)) return null;
             if (string.IsNullOrWhiteSpace(user.Role)) user.Role = RolesEnum.User.ToString();
+
+            if (UserRepository.EmailExist(user.Email)) throw new System.ArgumentException("already exists");
+
             var newUser = await UserRepository.CreateAsync(user);
             var login = await Authenticate(newUser);
 

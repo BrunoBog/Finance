@@ -5,6 +5,7 @@ using finance.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 [ApiController]
 [Route("v1/[controller]")]
 public class UserController : Controller
@@ -29,9 +30,21 @@ public class UserController : Controller
     [AllowAnonymous]
     public async Task<ActionResult<dynamic>> SignUp([FromBody] User user)
     {
-        var newUser = await Service.SignUpAsync(user);
-        if (newUser == null) return new StatusCodeResult(406); //  request.CreateResponse(HttpStatusCode.NotAcceptable, user);
-        return newUser;
+        try
+        {
+            var newUser = await Service.SignUpAsync(user);
+            if (newUser == null) return new StatusCodeResult(406); //  request.CreateResponse(HttpStatusCode.NotAcceptable, user);
+            return newUser;
+        }
+        catch (System.ArgumentException)
+        {
+            return new StatusCodeResult((int)System.Net.HttpStatusCode.Conflict);   
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
     }
 
     [HttpGet]

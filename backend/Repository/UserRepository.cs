@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace finance.Repository
 {
-    public class UserRepository: IBaseRepository<User>
+    public class UserRepository : IBaseRepository<User>
     {
         public UserRepository(IDatabaseSettings settings)
         {
@@ -26,13 +26,15 @@ namespace finance.Repository
         public User Get(string id) =>
             Collection.Find<User>(UserDTO => UserDTO.Id.ToString().Equals(id.ToString())).FirstOrDefault();
 
+        public bool EmailExist(string email) => Collection.Find<User>(UserDTO => UserDTO.Email.Equals(email.ToString())).ToList().Count > 0;
+
         public async Task<User> GetByEmailAndPasswordAsync(String email, String password) =>
             await Collection.Find(u => u.Email.Equals(email) && u.Password.Equals(password)).Limit(1).SingleAsync();
 
         public User Create(User UserDTO)
         {
             if (UserDTO.Id == null)
-                UserDTO.Id =  ObjectId.GenerateNewId();
+                UserDTO.Id = ObjectId.GenerateNewId();
 
             Collection.InsertOne(UserDTO);
             return UserDTO;
@@ -41,14 +43,14 @@ namespace finance.Repository
         public async Task<User> CreateAsync(User item)
         {
             if (item.Id == null)
-                item.Id =  ObjectId.GenerateNewId();
+                item.Id = ObjectId.GenerateNewId();
 
             await Collection.InsertOneAsync(item);
             return item;
         }
 
         public void Update(string id, User UserDTOIn) =>
-            Collection.ReplaceOne(UserDTO => UserDTO.Id.ToString().Equals( id), UserDTOIn);
+            Collection.ReplaceOne(UserDTO => UserDTO.Id.ToString().Equals(id), UserDTOIn);
 
         public void Remove(User UserDTOIn) =>
             Collection.DeleteOne(UserDTO => UserDTO.Id == UserDTOIn.Id);
