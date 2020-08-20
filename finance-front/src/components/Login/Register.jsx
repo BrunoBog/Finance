@@ -9,11 +9,10 @@ function initialState() {
     return { user: '', password: '', email: '' }
 }
 
-const Register = (props) => {
+const Register = () => {
     const [values, setValues] = useState(initialState)
     const { setToken } = useContext(StoreContext)
     const history = useHistory()
-    // const [propState] = useContext(props) // this.props.containerRef
 
     function onChange(event) {
         const { value, name } = event.target
@@ -24,7 +23,7 @@ const Register = (props) => {
         })
     }
 
-    async function login({ user, password, email }) {
+    async function register({ user, password, email }) {
         let response = await fetch('http://localhost:8080/v1/User/login', {
             method: 'POST',
             headers: {
@@ -44,7 +43,7 @@ const Register = (props) => {
     async function onSubmit(event) {
         event.preventDefault()
 
-        const { token } = login(values)
+        const { token } = register(values)
 
         if (token) {
             setToken(token)
