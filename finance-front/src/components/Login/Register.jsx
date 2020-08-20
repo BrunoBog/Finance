@@ -6,8 +6,9 @@ import cifrao from "../../img/cifrao.svg";
 import './Login.scss';
 
 function initialState() {
-    return { user: '', password: '', email: '' }
+    return { user: '', password: '', email: '', errorMessage: '' }
 }
+
 
 const Register = () => {
     const [values, setValues] = useState(initialState)
@@ -24,15 +25,18 @@ const Register = () => {
     }
 
     async function register({ user, password, email }) {
-        let response = await fetch('http://localhost:8080/v1/User/login', {
+        let response = await fetch('http://localhost:8080/v1/User/signUp', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ Email: email, Password: password }),
+            body: JSON.stringify({ Email: email, Password: password, UserName: user }),
         })
 
+        if(response.status === 409){
+            setValues( { errorMessage: "Email already Exists" } )
+        }
         if (!response.ok) return { token: null }
 
         let data = await response.json()
@@ -41,6 +45,7 @@ const Register = () => {
     }
 
     async function onSubmit(event) {
+        debugger
         event.preventDefault()
 
         const { token } = register(values)
@@ -53,6 +58,10 @@ const Register = () => {
         setValues(initialState)
     }
 
+    function Errormessage(){
+        return (<article className="errorMessage"><label>{values.errorMessage}</label></article>)
+    }
+
     return (
         <div className="base-container">
             <header>
@@ -63,6 +72,7 @@ const Register = () => {
                     <div className="image">
                         <img src={cifrao} alt="cifrão" />
                     </div>
+                    <Errormessage/>
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username"> Username</label>
@@ -80,12 +90,10 @@ const Register = () => {
                 </div>
 
                 <footer className="footer">
-                    <button className="btn" type="submit" >Register</button>
+                    <button className="btn" type="submit" onSubmit={onSubmit}>Register</button>
                 </footer>
-
+                
             </form>
-
-
         </div>
     )
 };
