@@ -53,7 +53,6 @@ const UserLogin = () => {
         if (!response.ok){ return { token: null }}
 
         let data = await response.json()
-        debugger
         return data
     }
 

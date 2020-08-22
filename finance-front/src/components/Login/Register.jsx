@@ -64,8 +64,8 @@ const Register = () => {
 
     return (
         <div className="base-container">
-            <header>
-                <div className="header">Register</div>
+            <header  className="header">
+                Register
             </header>
             <form autoComplete="nope" onSubmit={onSubmit}>
                 <div className="content">
