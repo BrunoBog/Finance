@@ -3,12 +3,13 @@ import StoreContext from '../Store/Context'
 import { useHistory } from 'react-router-dom'
 import CurrencyInput from '../inputs/MoneyInput'
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import Configs from '../../utils/RequestConfig'
 import 'react-day-picker/lib/style.css';
 
 import './SpendForm.scss';
 
 function initialState() {
-    return {  name: ``, description: ``, date: new Date(), moneyValue: '', categoryId: ``, messageWrong: '' }
+    return { name: ``, description: ``, date: new Date(), moneyValue: '', categoryId: ``, messageWrong: '' }
 }
 
 const SpendForm = () => {
@@ -17,12 +18,15 @@ const SpendForm = () => {
     const history = useHistory()
     const { setToken } = useContext(StoreContext)
 
+    function verifyValue(value) {
+        value = value.replace(',', '.')
+        value = parseFloat(value)
+        return value
+    }
+
     function onChange(event) {
         const { value, name } = event.target
-        setValues({
-            ...values,
-            [name]: value,
-        })
+        setValues({ ...values, [name]: value, })
     }
     const onDateChange = (date) => {
         let n = Date.parse(date)
@@ -43,26 +47,35 @@ const SpendForm = () => {
 
     }
 
-    async function onSubmit() {
-        debugger
-        let response = await fetch('http://localhost:8080/v1/Spends', {
+    async function addSpend({ name, description, moneyValue, date }) {
+        let floatValue = verifyValue(moneyValue)
+        let response = await fetch(`${Configs.baseUrl}/v1/Spends`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ name: values.name, description: values.description, value: values.moneyValue, date: values.date }),
+            body: JSON.stringify({ name: name, description: description, value: floatValue, date: date }),
         })
-        debugger
         if (response.status === 401) {
-            setToken(token)
+            setToken({ token: '' })
             history.push('/login')
         }
-        if (!response.ok) { return { token: null } }
+        if (!response.ok) { return false }
 
-        let data = await response.json()
-        console.log(data)
+        return true
+    }
+
+    async function onSubmit(event) {
+        event.preventDefault()
+
+        if (!await addSpend(values)){
+            setValues( { errorMessage: "Fail to add Spend" } )
+            return
+        }
+
+        setValues(initialState)
     }
 
     return (
@@ -87,13 +100,12 @@ const SpendForm = () => {
                     </div>
                     {/* Datepicker */}
                     <div className="form-group">
-                        {/* <DatePickerInput onChange={onDateChange} value={values.date} /> */}
                         <DayPickerInput onDayChange={onDateChange} name="date" id="date" value={values.date} />
 
                     </div>
                     <span className='ErrorMesssage'>{values.messageWrong}</span>
                     <footer className="footer">
-                    {/* <button className="btn" type="submit" onSubmit={onSubmit} >Login</button> */}
+                        {/* <button className="btn" type="submit" onSubmit={onSubmit} >Login</button> */}
                         <button className="btn-inside" type="submit" onSubmit={onSubmit} locale='BRL' >Send</button>
                     </footer>
                 </form>
