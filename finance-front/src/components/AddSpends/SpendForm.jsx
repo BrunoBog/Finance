@@ -77,14 +77,12 @@ const SpendForm = () => {
             return
         }
 
-        let data = await response.json()
         notify("Saved!")
-        console.log(data)
         setValues(initialState)
     }
 
     function notify(message) {
-        toast(`🦄 ${message}`, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,})
+        toast.success(`🦄 ${message}`, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,})
     }
 
     return (
