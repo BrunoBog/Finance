@@ -3,6 +3,8 @@ import StoreContext from '../Store/Context'
 import { useHistory } from 'react-router-dom'
 import CurrencyInput from '../inputs/MoneyInput'
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Configs from '../../utils/RequestConfig'
 import 'react-day-picker/lib/style.css';
 
@@ -75,7 +77,14 @@ const SpendForm = () => {
             return
         }
 
+        let data = await response.json()
+        notify("Saved!")
+        console.log(data)
         setValues(initialState)
+    }
+
+    function notify(message) {
+        toast(`🦄 ${message}`, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,})
     }
 
     return (
@@ -83,6 +92,17 @@ const SpendForm = () => {
 
             <header>
                 <span>New spend</span>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </header>
             <main>
                 <form className="addSpend" autoComplete="nope" onSubmit={onSubmit}>
@@ -105,8 +125,7 @@ const SpendForm = () => {
                     </div>
                     <span className='ErrorMesssage'>{values.messageWrong}</span>
                     <footer className="footer">
-                        {/* <button className="btn" type="submit" onSubmit={onSubmit} >Login</button> */}
-                        <button className="btn-inside" type="submit" onSubmit={onSubmit} locale='BRL' >Send</button>
+                        <button className="btn-inside" type="submit" id="submit" onSubmit={onSubmit} >Send</button>
                     </footer>
                 </form>
             </main>
