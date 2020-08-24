@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import StoreContext from '../../components/Store/Context'
 import { useHistory } from 'react-router-dom'
 import SpendForm from '../../components/AddSpends/SpendForm'
-
+import WeekSpends from "../../components/WeekSpends/WeekSpends"
 import './home.scss'
 
 const PagesHome = () => {
@@ -47,7 +47,7 @@ const PagesHome = () => {
 
           <div className="content">
             <article className="summary">
-              aqui os resumos dos gastos da semana
+            <WeekSpends/>
             </article>
 
             <article className="summary">
