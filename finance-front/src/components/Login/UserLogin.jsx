@@ -3,11 +3,12 @@ import StoreContext from '../../components/Store/Context'
 import { useHistory } from 'react-router-dom'
 import cifrao from "../../img/cifrao.svg";
 import Configs from '../../utils/RequestConfig'
+import Loading from '../Loading/Loading'
 
 import './Login.scss';
 
 function initialState() {
-    return { user: '', password: '', errorMessage: '' }
+    return { user: '', password: '', errorMessage: '', loading: false }
 }
 
 const UserLogin = () => {
@@ -24,12 +25,12 @@ const UserLogin = () => {
         })
     }
 
-    function Errormessage(){
+    function Errormessage() {
         return (<article className="errorMessage"><label>{values.errorMessage}</label></article>)
     }
 
     async function login({ user, password }) {
-        
+
         //TODO change in prod
         // let response = await fetch('https://finance.josafat.duckdns.org/v1/User/login', {
         //     // mode: 'no-cors',
@@ -51,23 +52,25 @@ const UserLogin = () => {
             body: JSON.stringify({ Email: user, Password: password }),
         })
 
-        if (!response.ok){ return { token: null }}
+        if (!response.ok) {
 
-        let data = await response.json()
-        return data
+            setValues(initialState)
+            setValues({ errorMessage: "Login Fail", loading: false })
+        }
+
+        let { token } = await response.json()
+        debugger
+        if (token) {
+            setToken(token)
+            setValues({ loading: false })
+            history.push('/')
+        }
     }
 
     async function onSubmit(event) {
+        setValues({ loading: true })
         event.preventDefault()
-        const { token } = await login(values)
-
-        if (token) {
-            setToken(token)
-            history.push('/')
-        }
-        
-        setValues(initialState)
-        setValues( { errorMessage: "Login Fail" } )
+        login(values)
     }
 
     return (
@@ -77,10 +80,12 @@ const UserLogin = () => {
             </header>
             <form autoComplete="nope" onSubmit={onSubmit}>
                 <div className="content">
-                    <div className="image">
+
+                    :<div className="image">
                         <img src={cifrao} alt="cifrão" />
                     </div>
-                    <Errormessage/>
+
+                    <Errormessage />
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username"> Username</label>
@@ -91,10 +96,13 @@ const UserLogin = () => {
                             <input type="password" name="password" id="password" placeholder="Password" onChange={onChange} value={values.password} />
                         </div>
                     </div>
+                    {values.loading ? <Loading color="#6EF9F5" /> :
+                    <footer className="footer">
+                        <button className="btn" type="submit" onSubmit={onSubmit} disabled={values.loading} >Login</button>
+                    </footer>
+                    }
                 </div>
-                <footer className="footer">
-                    <button className="btn" type="submit" onSubmit={onSubmit} >Login</button>
-                </footer>
+
             </form>
         </div>
     );
