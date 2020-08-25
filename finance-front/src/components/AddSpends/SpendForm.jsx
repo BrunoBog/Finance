@@ -104,9 +104,13 @@ const SpendForm = () => {
             </header>
             <main>
                 <form className="addSpend" autoComplete="nope" onSubmit={onSubmit}>
+                    {/* Datepicker */}
+                    <div className="form-group">
+                        <DayPickerInput onDayChange={onDateChange} name="date" id="date" value={values.date} />
+                    </div>
                     {/* Nake Spend */}
                     <div className="form-group">
-                        <input type="text" name="name" id="name" placeholder="Name" onChange={onChange} value={values.name} />
+                        <input type="texx" name="name" id="name" placeholder="Name" onChange={onChange} value={values.name} />
                     </div>
                     {/* Descriprion */}
                     <div className="form-group">
@@ -115,11 +119,6 @@ const SpendForm = () => {
                     {/* moneyValue */}
                     <div className="form-group">
                         <CurrencyInput placeholder="R$ 0.00" type="text" onChange={onChange} name="moneyValue" id="moneyValue" value={values.moneyValue} />
-                    </div>
-                    {/* Datepicker */}
-                    <div className="form-group">
-                        <DayPickerInput onDayChange={onDateChange} name="date" id="date" value={values.date} />
-
                     </div>
                     <span className='ErrorMesssage'>{values.messageWrong}</span>
                     <footer className="footer">
