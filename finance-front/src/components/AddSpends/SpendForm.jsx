@@ -2,16 +2,22 @@ import React, { useState, useContext } from 'react';
 import StoreContext from '../Store/Context'
 import { useHistory } from 'react-router-dom'
 import CurrencyInput from '../inputs/MoneyInput'
+import Loading from '../Loading/Loading'
+
 import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
+
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import Configs from '../../utils/RequestConfig'
-import 'react-day-picker/lib/style.css';
+
 
 import './SpendForm.scss';
 
 function initialState() {
-    return { name: ``, description: ``, date: new Date(), moneyValue: '', categoryId: ``, messageWrong: '' }
+    return { name: ``, description: ``, date: new Date(), moneyValue: '', categoryId: ``, messageWrong: '', isLoading: false }
 }
 
 const SpendForm = () => {
@@ -61,7 +67,7 @@ const SpendForm = () => {
             body: JSON.stringify({ name: name, description: description, value: floatValue, date: date }),
         })
         if (response.status === 401) {
-            setToken({ token: '' })
+            setToken({ token: '', isLoading: false })
             history.push('/login')
         }
         if (!response.ok) { return false }
@@ -71,18 +77,20 @@ const SpendForm = () => {
 
     async function onSubmit(event) {
         event.preventDefault()
+        setValues({ isLoading: true })
 
-        if (!await addSpend(values)){
-            setValues( { errorMessage: "Fail to add Spend" } )
+        if (!await addSpend(values)) {
+            setValues({ errorMessage: "Fail to add Spend", isLoading:false })
             return
         }
 
         notify("Saved!")
         setValues(initialState)
+        setValues({ isLoading:false })
     }
 
     function notify(message) {
-        toast.success(`🦄 ${message}`, {position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined,})
+        toast.success(`🦄 ${message}`, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
     }
 
     return (
@@ -122,7 +130,10 @@ const SpendForm = () => {
                     </div>
                     <span className='ErrorMesssage'>{values.messageWrong}</span>
                     <footer className="footer">
-                        <button className="btn-inside" type="submit" id="submit" onSubmit={onSubmit} >Send</button>
+                        {values.isLoading
+                            ? <Loading />
+                            : <button className="btn-inside" type="submit" id="submit" onSubmit={onSubmit} >Send</button>
+                        }
                     </footer>
                 </form>
             </main>
