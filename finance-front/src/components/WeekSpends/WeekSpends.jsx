@@ -53,7 +53,6 @@ const SpendForm = () => {
             weeks : data.summary,
             monthTotal : data.monthTotal,
         })
-
     }
 
     function notify(message) {
@@ -63,13 +62,11 @@ const SpendForm = () => {
     return (
         <div className="weekPanel">
             <header>
-                <span className="title">Week spend</span>
+                <span className="title">Month spends</span>
                 <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             </header>
             <main className="container">
-                {values.weeks.map( w => 
-                    <Spends total={w.total} weekNumber={w.weekNumber}/>
-                )}
+                {values.weeks.map( w => <Spends total={w.total} weekNumber={w.weekNumber}/>)}
                     
             </main>
         </div>

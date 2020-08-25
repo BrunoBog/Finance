@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import StoreContext from '../../components/Store/Context'
 import { useHistory } from 'react-router-dom'
 import cifrao from "../../img/cifrao.svg";
+import Configs from '../../utils/RequestConfig'
 
 import './Login.scss';
 
@@ -25,7 +26,7 @@ const Register = () => {
     }
 
     async function register({ user, password, email }) {
-        let response = await fetch('http://localhost:8080/v1/User/signUp', {
+        let response = await fetch(`${Configs.baseUrl}/v1/User/signUp`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
