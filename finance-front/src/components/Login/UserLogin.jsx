@@ -59,7 +59,6 @@ const UserLogin = () => {
         }
 
         let { token } = await response.json()
-        debugger
         if (token) {
             setToken(token)
             setValues({ loading: false })
