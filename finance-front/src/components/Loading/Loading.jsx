@@ -6,10 +6,10 @@ const Loading = (prop) => {
 
     const list = ["balls","bars","bubbles","cubes","cylon","spin","spinningBubbles","spokes"]
     
-    let ftype = type ?? list[Math.round( Math.random( 0,list.length-1))]
+    let ftype = type ?? list[Math.floor(Math.random() * list.length)]
 
     return (
-        <ReactLoading type={ftype} color={color ?? '#fff'}  />
+        <ReactLoading type={ftype} color={color ?? '#6EF9F5'}  />
     )
 }
 

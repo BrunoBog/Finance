@@ -3,11 +3,12 @@ import StoreContext from '../../components/Store/Context'
 import { useHistory } from 'react-router-dom'
 import cifrao from "../../img/cifrao.svg";
 import Configs from '../../utils/RequestConfig'
+import Loading from '../Loading/Loading'
 
 import './Login.scss';
 
 function initialState() {
-    return { user: '', password: '', email: '', errorMessage: '' }
+    return { user: '', password: '', email: '', errorMessage: '', loading: false }
 }
 
 
@@ -35,37 +36,39 @@ const Register = () => {
             body: JSON.stringify({ Email: email, Password: password, UserName: user }),
         })
 
-        if(response.status === 409){
-            setValues( { errorMessage: "Email already Exists" } )
+        if (response.status === 409) {
+            setValues({ errorMessage: "Email already Exists", loading: false })
         }
-        if (!response.ok) return { token: null }
+        
+        if (!response.ok) {
+            setValues(initialState)
+            setValues({ errorMessage: "Register Fail", loading: false })
+        }
+
+        let { token } = await response.json()
+        if (token) {
+            setToken(token)
+            setValues({ loading: false })
+            history.push('/')
+        }
+
 
         let data = await response.json()
-        debugger
         return data
     }
 
     async function onSubmit(event) {
-        debugger
         event.preventDefault()
-
-        const { token } = register(values)
-
-        if (token) {
-            setToken(token)
-            history.push('/')
-        }
-
-        setValues(initialState)
+        register(values)
     }
 
-    function Errormessage(){
+    function Errormessage() {
         return (<article className="errorMessage"><label>{values.errorMessage}</label></article>)
     }
 
     return (
         <div className="base-container">
-            <header  className="header">
+            <header className="header">
                 Register
             </header>
             <form autoComplete="nope" onSubmit={onSubmit}>
@@ -73,7 +76,7 @@ const Register = () => {
                     <div className="image">
                         <img src={cifrao} alt="cifrão" />
                     </div>
-                    <Errormessage/>
+                    <Errormessage />
                     <div className="form">
                         <div className="form-group">
                             <label htmlFor="username"> Username</label>
@@ -89,11 +92,11 @@ const Register = () => {
                         </div>
                     </div>
                 </div>
-
-                <footer className="footer">
-                    <button className="btn" type="submit" onSubmit={onSubmit}>Register</button>
-                </footer>
-                
+                {values.loading ? <Loading color="#6EF9F5" /> :
+                    <footer className="footer">
+                        <button className="btn" type="submit" onSubmit={onSubmit}>Register</button>
+                    </footer>
+                }
             </form>
         </div>
     )

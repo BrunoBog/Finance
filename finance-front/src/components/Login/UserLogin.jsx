@@ -31,18 +31,6 @@ const UserLogin = () => {
 
     async function login({ user, password }) {
 
-        //TODO change in prod
-        // let response = await fetch('https://finance.josafat.duckdns.org/v1/User/login', {
-        //     // mode: 'no-cors',
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ Email: user, Password: password }),
-        // })
-
-
         let response = await fetch(`${Configs.baseUrl}/v1/User/login`, {
             method: 'POST',
             headers: {
@@ -59,7 +47,6 @@ const UserLogin = () => {
         }
 
         let { token } = await response.json()
-        debugger
         if (token) {
             setToken(token)
             setValues({ loading: false })

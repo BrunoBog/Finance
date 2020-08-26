@@ -1,18 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import StoreContext from '../Store/Context'
 import { useHistory } from 'react-router-dom'
+import Loading from '../Loading/Loading'
 
-import { ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Spends from './Spends'
 
 import Configs from '../../utils/RequestConfig'
 
- import './WeekSpend.scss';
+import './WeekSpend.scss';
 
 function initialState() {
-    return { weeks: [], monthTotal: 0, messageWrong: '' }
+    return { weeks: [], monthTotal: 0, messageWrong: '', loading: true }
 }
 
 const SpendForm = () => {
@@ -21,8 +22,8 @@ const SpendForm = () => {
     const { setToken } = useContext(StoreContext)
     const history = useHistory()
 
-    useEffect(() =>{
-        const fetchData = async () => { await getValues()}
+    useEffect(() => {
+        const fetchData = async () => { await getValues() }
         fetchData();
     })
 
@@ -41,22 +42,23 @@ const SpendForm = () => {
         }
 
         if (!response.ok) {
-            setValues({...values, messageWrong: response.text })
+            setValues({ ...values, messageWrong: response.text, loading: true })
             notify("falha ao buscar os dados")
-            return 
+            return
         }
 
         let data = await response.json()
 
         setValues({
             ...values,
-            weeks : data.summary,
-            monthTotal : data.monthTotal,
+            weeks: data.summary,
+            monthTotal: data.monthTotal,
+            loading: false
         })
     }
 
     function notify(message) {
-        toast.success(`🦄 ${message}`, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
+        toast.success(`🩹 ${message}`, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
     }
 
     return (
@@ -66,8 +68,10 @@ const SpendForm = () => {
                 <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             </header>
             <main className="container">
-                {values.weeks.map( w => <Spends total={w.total} weekNumber={w.weekNumber}/>)}
-                    
+                {values.loading
+                    ? <Loading color="#6EF9F5" />
+                    : values.weeks.map(w => <Spends total={w.total} weekNumber={w.weekNumber} />)
+                }
             </main>
         </div>
     )
