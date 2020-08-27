@@ -3,7 +3,7 @@ import './Spends.scss'
 
 
 const Spends = (prop) => {
-    const [values, setValues] = useState(prop)
+    const [values] = useState(prop)
     debugger
 
     return (
