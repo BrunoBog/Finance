@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Finance/static/css/main.a84350fc.chunk.css",
-    "main.js": "/Finance/static/js/main.755b9f59.chunk.js",
-    "main.js.map": "/Finance/static/js/main.755b9f59.chunk.js.map",
+    "main.css": "/Finance/static/css/main.822c4779.chunk.css",
+    "main.js": "/Finance/static/js/main.421ff91b.chunk.js",
+    "main.js.map": "/Finance/static/js/main.421ff91b.chunk.js.map",
     "runtime-main.js": "/Finance/static/js/runtime-main.5008a952.js",
     "runtime-main.js.map": "/Finance/static/js/runtime-main.5008a952.js.map",
     "static/css/2.35b1af77.chunk.css": "/Finance/static/css/2.35b1af77.chunk.css",
-    "static/js/2.1a53d5d2.chunk.js": "/Finance/static/js/2.1a53d5d2.chunk.js",
-    "static/js/2.1a53d5d2.chunk.js.map": "/Finance/static/js/2.1a53d5d2.chunk.js.map",
+    "static/js/2.5b3e1b80.chunk.js": "/Finance/static/js/2.5b3e1b80.chunk.js",
+    "static/js/2.5b3e1b80.chunk.js.map": "/Finance/static/js/2.5b3e1b80.chunk.js.map",
     "index.html": "/Finance/index.html",
-    "precache-manifest.0fa10d37f11aa43e0097bc78efbaa2e6.js": "/Finance/precache-manifest.0fa10d37f11aa43e0097bc78efbaa2e6.js",
+    "precache-manifest.a0edb7e2a999dbe98fad3eaeebae57b7.js": "/Finance/precache-manifest.a0edb7e2a999dbe98fad3eaeebae57b7.js",
     "service-worker.js": "/Finance/service-worker.js",
     "static/css/2.35b1af77.chunk.css.map": "/Finance/static/css/2.35b1af77.chunk.css.map",
-    "static/css/main.a84350fc.chunk.css.map": "/Finance/static/css/main.a84350fc.chunk.css.map",
-    "static/js/2.1a53d5d2.chunk.js.LICENSE.txt": "/Finance/static/js/2.1a53d5d2.chunk.js.LICENSE.txt",
+    "static/css/main.822c4779.chunk.css.map": "/Finance/static/css/main.822c4779.chunk.css.map",
+    "static/js/2.5b3e1b80.chunk.js.LICENSE.txt": "/Finance/static/js/2.5b3e1b80.chunk.js.LICENSE.txt",
     "static/media/cash-payment-bag-1.svg": "/Finance/static/media/cash-payment-bag-1.71e76e56.svg",
     "static/media/cifrao.svg": "/Finance/static/media/cifrao.1a271b19.svg",
     "static/media/refresh.svg": "/Finance/static/media/refresh.9fb1e188.svg"
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.5008a952.js",
     "static/css/2.35b1af77.chunk.css",
-    "static/js/2.1a53d5d2.chunk.js",
-    "static/css/main.a84350fc.chunk.css",
-    "static/js/main.755b9f59.chunk.js"
+    "static/js/2.5b3e1b80.chunk.js",
+    "static/css/main.822c4779.chunk.css",
+    "static/js/main.421ff91b.chunk.js"
   ]
 }
