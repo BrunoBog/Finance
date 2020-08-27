@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import paybag from "../../img/cash-payment-bag-1.svg";
-import './Spends.scss'
+import './WeekSpendsItem.scss'
 
-const Spends = (props) => {
+const WeekSpendsItem = (props) => {
     const [values] = useState(props)
     
     return (
@@ -19,4 +19,4 @@ const Spends = (props) => {
 
 }
 
-export default Spends
+export default WeekSpendsItem

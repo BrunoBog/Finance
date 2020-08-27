@@ -3,6 +3,7 @@ import StoreContext from '../../components/Store/Context'
 import { useHistory } from 'react-router-dom'
 import SpendForm from '../../components/AddSpends/SpendForm'
 import WeekSpends from "../../components/WeekSpends/WeekSpends"
+import MonthSpends from '../../components/MonthSummary/MonthSpends'
 import './home.scss'
 
 const PagesHome = () => {
@@ -47,12 +48,13 @@ const PagesHome = () => {
               </article>
 
               <article className="summary">
-                aqui a soma do gasto no mês
+                <MonthSpends/>
               </article>
             </div>
 
           </main>
-
+          
+          
         </div>
 
       </div>
