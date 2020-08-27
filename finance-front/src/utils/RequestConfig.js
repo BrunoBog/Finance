@@ -1,6 +1,7 @@
 
 const Configs = {
-    baseUrl: 'http://localhost:8080'
+    url: 'http://localhost:8080',
+    baseUrl: "https://finance.josafat.duckdns.org",
     
 }
 
