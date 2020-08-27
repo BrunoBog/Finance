@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/Finance/static/css/main.20ca4495.chunk.css",
+    "main.js": "/Finance/static/js/main.08dd1976.chunk.js",
+    "main.js.map": "/Finance/static/js/main.08dd1976.chunk.js.map",
+    "runtime-main.js": "/Finance/static/js/runtime-main.5008a952.js",
+    "runtime-main.js.map": "/Finance/static/js/runtime-main.5008a952.js.map",
+    "static/css/2.35b1af77.chunk.css": "/Finance/static/css/2.35b1af77.chunk.css",
+    "static/js/2.6aeccb00.chunk.js": "/Finance/static/js/2.6aeccb00.chunk.js",
+    "static/js/2.6aeccb00.chunk.js.map": "/Finance/static/js/2.6aeccb00.chunk.js.map",
+    "index.html": "/Finance/index.html",
+    "precache-manifest.4bf62d5cd394b5d021d7693c59c60d02.js": "/Finance/precache-manifest.4bf62d5cd394b5d021d7693c59c60d02.js",
+    "service-worker.js": "/Finance/service-worker.js",
+    "static/css/2.35b1af77.chunk.css.map": "/Finance/static/css/2.35b1af77.chunk.css.map",
+    "static/css/main.20ca4495.chunk.css.map": "/Finance/static/css/main.20ca4495.chunk.css.map",
+    "static/js/2.6aeccb00.chunk.js.LICENSE.txt": "/Finance/static/js/2.6aeccb00.chunk.js.LICENSE.txt",
+    "static/media/cash-payment-bag-1.svg": "/Finance/static/media/cash-payment-bag-1.71e76e56.svg",
+    "static/media/cifrao.svg": "/Finance/static/media/cifrao.1a271b19.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5008a952.js",
+    "static/css/2.35b1af77.chunk.css",
+    "static/js/2.6aeccb00.chunk.js",
+    "static/css/main.20ca4495.chunk.css",
+    "static/js/main.08dd1976.chunk.js"
+  ]
+}
