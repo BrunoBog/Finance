@@ -26,6 +26,7 @@ const SpendForm = () => {
     useEffect(() => {
         const fetchData = async () => { await getValues() }
         fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.refresh])
 
     async function getValues() {
