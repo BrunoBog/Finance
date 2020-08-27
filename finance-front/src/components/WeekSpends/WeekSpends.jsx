@@ -7,7 +7,7 @@ import RefreshButton from '../RefreshButton/RefreshButton'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Spends from './Spends'
+import WeekSpendsItem from './WeekSpendsItem'
 
 import Configs from '../../utils/RequestConfig'
 
@@ -77,7 +77,7 @@ const SpendForm = () => {
             <main className="container">
                 {values.loading
                     ? <Loading color="#6EF9F5" />
-                    : values.weeks.map(w => <Spends total={w.total} weekNumber={w.weekNumber} key={w.weekNumber} />)
+                    : values.weeks.map(w => <WeekSpendsItem total={w.total} weekNumber={w.weekNumber} key={w.weekNumber} />)
                 }
             </main>
         </div>

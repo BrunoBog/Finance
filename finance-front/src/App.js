@@ -20,5 +20,4 @@ const PagesRoot = () => (
   </Router>
 )
 
-
 export default PagesRoot;
