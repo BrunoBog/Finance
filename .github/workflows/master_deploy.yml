@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - nome: Instalar dependências
+      - name: Instalar dependências
         run: yarn
       - name: Install Packages
         run: cd ./finance-front && yarn install
