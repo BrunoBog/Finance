@@ -10,6 +10,13 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
     
 
     .title {
