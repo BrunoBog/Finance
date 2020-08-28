@@ -1,7 +1,7 @@
 # Finance
 Proj to controll my spends make with **.net core** and **react**
 
-
+![FrontDeploy](https://github.com/BrunoBog/Finance/workflows/MasterDeployCI/badge.svg)
 
 # Frontend
 this site was build with React
