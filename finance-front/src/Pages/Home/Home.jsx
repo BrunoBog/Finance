@@ -36,13 +36,10 @@ const PagesHome = () => {
 
 
           <main className="main-content">
-            <div className="right-content">
               <article className="newEntry">
                 <SpendForm />
               </article>
-            </div>
 
-            <div className="content">
               <article className="summary">
                 <WeekSpends />
               </article>
@@ -50,7 +47,6 @@ const PagesHome = () => {
               <article className="summary">
                 <MonthSpends/>
               </article>
-            </div>
 
           </main>
           
