@@ -46,9 +46,9 @@ namespace Finance.Services
             return SummarySpends(spends);
         }
 
-        internal List<Spend> GetSpendsOnMonth(int monthNumber, int yearNumber) =>  
-            Repository.GetSpendsBetweenDates(new DateTime(yearNumber,monthNumber,1), new DateTime(yearNumber,monthNumber+1,1).AddSeconds(-1)).OrderByDescending(s => s.Date).ToList();
-        
+        internal List<Spend> GetSpendsOnMonth(int monthNumber, int yearNumber) =>
+            Repository.GetSpendsBetweenDates(new DateTime(yearNumber, monthNumber, 1), new DateTime(yearNumber, monthNumber + 1, 1).AddSeconds(-1)).OrderByDescending(s => s.Date).ToList();
+
 
         private SummaryDTO SummarySpends(List<Spend> spends)
         {
@@ -61,11 +61,15 @@ namespace Finance.Services
                         Total = g.Sum(s => s.Value)
                     });
 
-                return new SummaryDTO{
-                    Title = $"starting in {spends.OrderBy(s => s.Date).First().Date:dd/MM/yyyy} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
-                    Summary = weekSpends.OrderByDescending(s => s.WeekNumber).ToList(),
-                    MonthTotal = weekSpends.Sum(w => w.Total)
-                };
+            if (spends.Count == 0) return new SummaryDTO { MonthTotal = 0, Summary = new List<WeekSummary>(), Title = "Don't have any spends" };
+
+            return new SummaryDTO
+            {
+                Title = $"starting in {spends.OrderBy(s => s.Date).First().Date:dd/MM/yyyy} on week {Util.GetWeekNumber(spends.OrderBy(s => s.Date).First().Date)}",
+                Summary = weekSpends.OrderByDescending(s => s.WeekNumber).ToList(),
+                MonthTotal = weekSpends.Sum(w => w.Total)
+            };
+
 
         }
 
@@ -74,7 +78,7 @@ namespace Finance.Services
             var spends = new List<Spend>();
 
             WalletService.GetWalletByUser(username).ForEach(w =>
-               spends.AddRange( Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthCount *1), end: DateTime.Now.AddMonths(monthCount *1)))
+               spends.AddRange(Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthCount * 1), end: DateTime.Now.AddMonths(monthCount * 1)))
             );
 
             return spends;
