@@ -3,6 +3,7 @@ import StoreContext from '../Store/Context'
 import { useHistory } from 'react-router-dom'
 import Loading from '../Loading/Loading'
 import RefreshButton from '../RefreshButton/RefreshButton'
+import NotFound from '../NotFound/NotFound'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,7 +44,6 @@ const SpendForm = () => {
             setToken({ token: '' })
             history.push('/login')
         }
-
         if (!response.ok) {
             setValues({ ...values, messageWrong: response.text, loading: true })
             notify("falha ao buscar os dados")
@@ -59,14 +59,12 @@ const SpendForm = () => {
             loading: false
         })
     }
-
     function notify(message) {
         toast.success(`🩹 ${message}`, { position: "top-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, })
     }
     function refreshValues(){
         setValues({loading: true, refresh: !values.refresh})
     }
-
     return (
         <div className="weekPanel">
             <header>
@@ -77,7 +75,9 @@ const SpendForm = () => {
             <main className="container">
                 {values.loading
                     ? <Loading color="#6EF9F5" />
-                    : values.weeks.map(w => <WeekSpendsItem total={w.total} weekNumber={w.weekNumber} key={w.weekNumber} />)
+                    : values.monthTotal > 0 
+                        ? values.weeks.map(w => <WeekSpendsItem total={w.total} weekNumber={w.weekNumber} key={w.weekNumber} />)
+                        : < NotFound />
                 }
             </main>
         </div>
