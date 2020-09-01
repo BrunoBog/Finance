@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, setToken } from 'react'
 import Loading from '../Loading/Loading'
 import Spends from '../Spends/Spends'
+import NotFound from '../NotFound/NotFound'
 import StoreContext from '../Store/Context'
 import Configs from '../../utils/RequestConfig'
 import { useHistory } from 'react-router-dom'
@@ -18,7 +19,7 @@ const MonthSpends = () => {
     useEffect(() => {
         const fetchData = async () => { await getValues() }
         fetchData();
-        //TODO Debit to resolve later
+        //TODO to resolve later
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -36,30 +37,26 @@ const MonthSpends = () => {
             setToken({ token: '' })
             history.push('/login')
         }
-
         if (!response.ok) {
             setValues({ messageWrong: response.text, loading: true })
-            // notify("falha ao buscar os dados")
             return
         }
 
         let resp = await response.json()
-        debugger
-        setValues({
-            spends: sortSpends(resp),
-            totalValue: resp.map(i => i.value).reduce((accumulator, currentValue) => accumulator + currentValue),
-            loading: false
-        })
+        
+        if (resp.lenght > 0)
+            setValues({
+                spends: sortSpends(resp),
+                totalValue: resp.map(i => i.value).reduce((accumulator, currentValue) => accumulator + currentValue),
+                loading: false
+            });;
+            setValues({loading: false})
     }
 
     function sortSpends(items) {
         return items.sort((a, b) => {
-            if (a.date > b.date) {
-                return 1;
-            }
-            if (a.date < b.date) {
-                return -1;
-            }
+            if (a.date > b.date) return 1;
+            if (a.date < b.date) return -1;
             return 0;
         })
     }
@@ -72,22 +69,25 @@ const MonthSpends = () => {
 
             <main className="main-content">
                 <div className="principal">
-                    {values.loading
-                        ? <Loading color="#6EF9F5" />
-                        : values.spends.map(w =>
-                            <Spends
-                                name={w.name}
-                                value={w.value}
-                                date={w.date}
-                                description={w.description}
-                                key={w.id.timestamp}
-                            />)
+                    {
+                        values.loading
+                            ? <Loading color="#6EF9F5" />
+                            : values.totalValue > 0
+                                ? values.spends.map(w =>
+                                    <Spends
+                                        name={w.name}
+                                        value={w.value}
+                                        date={w.date}
+                                        description={w.description}
+                                        key={w.id.timestamp}
+                                    />)
+                                : <NotFound />
                     }
                 </div>
             </main>
 
             <footer>
-                Total:  {values.totalValue.toFixed(2)}
+                  { values.totalValue > 0 ? `Total:  ${values.totalValue.toFixed(2)}`: '' }
             </footer>
         </div>
     )
