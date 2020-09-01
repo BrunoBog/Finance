@@ -52,8 +52,7 @@ namespace Finance.Services
 
         private SummaryDTO SummarySpends(List<Spend> spends)
         {
-
-            var weekSpends = spends.GroupBy(s => Util.GetWeekNumber(s.Date))
+            var weekSpends = spends.GroupBy(s => s.Date.WeekNumber())
                 .Select(
                     g => new WeekSummary
                     {
@@ -71,14 +70,20 @@ namespace Finance.Services
             };
 
 
+
         }
 
         private List<Spend> GetSpendsFromUserWallet(string username, int monthCount = 0)
         {
             var spends = new List<Spend>();
+            var dayinit = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthCount *1).FristDayOfWeek();
 
             WalletService.GetWalletByUser(username).ForEach(w =>
+<<<<<<< HEAD
                spends.AddRange(Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(monthCount * 1), end: DateTime.Now.AddMonths(monthCount * 1)))
+=======
+               spends.AddRange( Repository.GetSpendsInWallet(wallet_id: w.Id.Value, start: dayinit , end: DateTime.Now.AddMonths(monthCount *1)))
+>>>>>>> main
             );
 
             return spends;
