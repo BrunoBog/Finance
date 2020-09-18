@@ -4,7 +4,6 @@ import './Spends.scss'
 
 const Spends = (prop) => {
     const [values] = useState(prop)
-    debugger
 
     return (
         <div className="spend-content">

@@ -43,14 +43,17 @@ const MonthSpends = () => {
         }
 
         let resp = await response.json()
-        
-        if (resp.lenght > 0)
-            setValues({
-                spends: sortSpends(resp),
-                totalValue: resp.map(i => i.value).reduce((accumulator, currentValue) => accumulator + currentValue),
-                loading: false
-            });;
-            setValues({loading: false})
+
+        console.log(resp.length)
+        if (resp.length === 0) setValues({ loading: false })
+
+        debugger
+        setValues({
+            spends: sortSpends(resp),
+            totalValue: resp.map(i => i.value).reduce((accumulator, currentValue) => accumulator + currentValue),
+            loading: false
+        });
+
     }
 
     function sortSpends(items) {
@@ -87,7 +90,7 @@ const MonthSpends = () => {
             </main>
 
             <footer>
-                  { values.totalValue > 0 ? `Total:  ${values.totalValue.toFixed(2)}`: '' }
+                {values.totalValue > 0 ? `Total:  ${values.totalValue.toFixed(2)}` : ''}
             </footer>
         </div>
     )
